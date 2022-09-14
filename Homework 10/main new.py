@@ -1,29 +1,23 @@
-from src.db import *
-from src.models import Contact, Phone, Email, Note
-from sqlalchemy.orm import joinedload
-from faker import Faker
-fake = Faker()
+from src.mongo import *
+
+# from faker import Faker
+# fake = Faker()
+
 
 def change():
-    pass
+    print('CHANGING PHONE NUMBER')
+    name = input('Please enter the name of contact you want to change phone number: \n')
+    contact_counter = assistant.count_documents(
+        {"name": name})
 
-def add_contact_fake():
-    for i in range(10):
-        addcontact = Contact(name=fake.first_name())
-        session.add(addcontact)
-        session.commit()
+    if contact_counter > 0:
+        phone = input(f'Please enter new phone for {name}: \n')
+        assistant.delete_many({"name": name})
+        assistant.insert_one({"name": name, "phone": phone})
 
-        addphone = Phone(phone=fake.phone_number(), contact_id=addcontact.id)
-        session.add(addphone)
-        session.commit()
-       
-        addemail = Email(email=fake.ascii_free_email(), contact_id=addcontact.id)
-        session.add(addemail)
-        session.commit()
-      
-        addenote = Note(note='FAKE', contact_id=addcontact.id)
-        session.add(addenote)
-        session.commit()
+    else:
+        print('There is not such contact.')
+
 
 def error_handler(func):
     def inner(*args):
@@ -61,115 +55,68 @@ def main(esc_e=True):
         if output == 'exit':
             break
 
+
 #Adding Contact
 def add():
     print(145 * '_')
     name = input('Input Name:\n')
     phone = input('Input Phone:\n')
+    contact_counter = assistant.count_documents({"name": name, "phone": phone})
 
-    addcontact = Contact(name=name)
-    session.add(addcontact)
-    session.commit()
-
-    addphone = Phone(phone=phone, contact_id=addcontact.id)
-    session.add(addphone)
-    session.commit()
-
-    while True:
-        print('Do you want to add E-mail? "y" (YES) or n (NO). Type "exit" to exit')
-        decision = str(input())
-        decision = decision.lower()
-        if decision == 'y' or decision == 'yes' or decision == 'нуі' or decision == 'н' or decision == 'да' or decision == 'д':
-            
-            email = input('Input E-mail. Please no more than 30 symbols.\n')
-            #if re.match("([a-zA-Z][a-zA-Z0-9.!#$%^*=-]{1,}@[a-zA-Z]+\.[a-zA-Z]{2,})", email):
-            if 1 < len(email) <= 30:
-                addemail = Email(email=email, contact_id=addcontact.id)
-                session.add(addemail)
-                session.commit()
-                break
-            else:
-                print(f'Your E-mail is {len(email)} symbols. Please no more than 30 symbols')
-            # else:
-            #     print('Format is wrong. Try again in format: your_nickname@something.domen_name')
-        elif decision == 'exit' or decision == 'esc' or decision == 'close' or decision == 'учше':
-            return 'exit'
-
-        elif decision == 'n' or decision == 'not' or decision == 'no' or decision == 'нет' or decision == 'тщ' or decision == 'тще' or decision == 'т':
-            addemail = Email(email="No", contact_id=addcontact.id)
-            session.add(addemail)
-            session.commit()
-            break
-
-        else:
-            print('Wrong input!')
-
-    while True:
-        print('Do you want to add Notes? "y" (YES) or n (NO). Type "exit" to exit')
-        decision = str(input())
-        decision = decision.lower()
-
-        if decision == 'y' or decision == 'yes' or decision == 'нуі' or decision == 'н' or decision == 'да' or decision == 'д':
-            print('Input Notes. Please no more than 50 symbols')
-            notes = input()
-            if 1 < len(notes) <= 50:
-                addnote = Note(note=notes, contact_id=addcontact.id)
-                session.add(addnote)
-                session.commit()
-                break
-            else:
-                print(f'Your Tags is {len(notes)} symbols. Please no more than 50 symbols')
-
-        elif decision == 'exit' or decision == 'esc' or decision == 'close' or decision == 'учше':
-            return 'exit'
-
-        elif decision == 'n' or decision == 'not' or decision == 'no' or decision == 'нет' or decision == 'тщ' or \
-                decision == 'тще' or decision == 'т':
-
-            addnote = Note(note='', contact_id=addcontact.id)
-            session.add(addnote)
-            session.commit()
-            break
-
-        else:
-            print('Wrong input!')
+    if contact_counter == 0:
+        assistant.insert_one({"name": name, "phone": phone})
+        print(f'\n\tContact has been successfully added to addressbook')
+    else:
+        print(f'\n\tEntered contact with phone {phone} already exist')
 
 
 def delete():
     print('DELETING')
-    item = find()
+    name = find()
     print(50*'*')
     choice = input("You are going to delete it. \nPress 1 to delete, "
                    "\nPress 0 to cancel\n")
-    if choice:
-        user = session.query(Contact).filter(Contact.id == item.id).first()
-        session.delete(user)
-        session.commit()
-        print(f'{item.name} DELETED')
+    if choice and name:
+        assistant.delete_many({"name": name})
     else:
-        print('Canceling')
+        print('Enter correct data.')
 
 
 def find():
     name = input('What contact do you want to find. Enter the proper name: ')
-    item = session.query(Contact).filter(Contact.name == name).one()
-    show(item)
-    return item
 
-
-
-def show(item=None):
-    print(50 * '_')
-
-    if item is None:
-        item = session.query(Contact).options(joinedload('email'), joinedload('note'), joinedload('phone')).all()
-        for person in item:
-            print()
-            print(f'id: {person.id},  name: {person.name},  phone: {[p.phone for p in person.phone]}, email: {[e.email for e in person.email]}, note:{[n.note for n in person.note]}')
+    show(name)
+    contact_counter = assistant.count_documents(
+        {"name": name})
+    if contact_counter:
+        return name
     else:
-        print(f'id: {item.id},  name: {item.name}')
+        return None
 
 
+def show(name = None):
+    if name is None:
+        print(50 * '_')
+        result = assistant.find({})
+        for el in result:
+            name = el['name']
+            phone = el['phone']
+            print()
+            print(f'name: {name},  phone: {phone}')
+
+    else:
+        contact_counter = assistant.count_documents(
+            {"name": name})
+
+        if contact_counter > 0:
+            result = assistant.find({'name': name})
+            for el in result:
+                name = el['name']
+                phone = el['phone']
+                print()
+                print(f'name: {name},  phone: {phone}')
+        else:
+            print(f'\tThere is not such contact.')
 
 @error_handler
 def handler(user_inpu):
@@ -270,5 +217,5 @@ SHOW = ['ырща', 'ырщцу', 'showe', 'schow', 'schove', 'chov', 'shove', '
         'ірщцу', 'показать', 'рщц', 'ірщм']
 
 if __name__ == '__main__':
-    add_contact_fake()
+    # add_contact_fake()
     main()
