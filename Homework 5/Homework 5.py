@@ -14,7 +14,7 @@ def factorize(*number):
         print("Времени затрачено: {:.5f}s".format(elapsed))
     return result
 
-    #raise NotImplementedError()
+    raise NotImplementedError()
 
 
 if __name__ == '__main__':
