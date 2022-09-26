@@ -178,3 +178,24 @@ button:hover{
 #chk:checked ~ .signup label{
 	transform: scale(.6);
 }
+.links ul {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  align-items: center;
+}
+.btn {
+  display: inline-block;
+  padding: 0.9rem 1.9rem;
+
+  color: #fff !important;
+  background-color: #573b8a;
+  border-radius: 16px;
+  text-transform: capitalize;
+  transition: 0.3s;
+}
+
+.btn:hover {
+    background-color: #573b8a;
+  transform: scale(1) !important;
+}

@@ -9,7 +9,7 @@ class Contact(db.Model):
     name = db.Column(db.String(120), nullable=False)
     phone = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=True)
-    notes = db.Column(db.String(120), unique=True, nullable=True)
+    notes = db.Column(db.String(120), unique=False, nullable=True)
 
     user_id = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
     user = relationship('User', cascade='all, delete', back_populates='contacts')

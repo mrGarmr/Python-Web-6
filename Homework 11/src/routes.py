@@ -91,6 +91,7 @@ def logout():
 
     return response
 
+
 @app.route('/mainpage', strict_slashes=False)
 def main_table():
     auth = True if 'username' in session else False
@@ -98,8 +99,11 @@ def main_table():
         return redirect(request.url)
     #!!Write
     allcontacts = phonebook.get_phonebook_user(session['username']['id'])
-    print(allcontacts)
-    return render_template('mainpage.html', auth=auth, contacts=allcontacts)
+    user_name = session['username']['username']
+
+    contacts_amount = len(allcontacts)
+    return render_template('mainpage.html', username=user_name, contacts_amount = contacts_amount, auth=auth, contacts = allcontacts)
+
 # def mainPage():
 #     if request.method == 'GET':
 #
