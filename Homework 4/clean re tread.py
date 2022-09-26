@@ -1,5 +1,5 @@
 import re
-import pathlib
+import aiopath
 import shutil
 import time
 from threading import Thread
@@ -21,7 +21,8 @@ def change_dist(path_dist,path_g,name_list_dir,user_input):
     
     name_n=name_w+e_suf
     d_d=user_input+'\\'+name_list_dir
-    d_dpath=pathlib.Path(d_d)
+    d_dpath=aiopath.path(d_d)
+    
     if not d_dpath.exists():
         d_dpath.mkdir()
     d=user_input+'\\'+name_list_dir+'\\'+name_n
@@ -31,7 +32,7 @@ def change_dist(path_dist,path_g,name_list_dir,user_input):
         d_w=user_input+'\\'+name_list_dir+'\\'+name_w
         shutil.move(path_dist, d)
         shutil.unpack_archive(d, d_w)
-        rem_ar=pathlib.Path(d)
+        rem_ar=aiopath.path(d)
         rem_ar.unlink()
 
 def normalize(text):
@@ -122,7 +123,7 @@ def print_recursive(path,user_input):
 
 def delete_dir(path):
     
-    path = pathlib.Path(path)
+    path = aiopath.path(path)
     if path.is_dir() and path.name not in dir_list:
         for element in path.iterdir():
             if element.is_dir() and element.name not in dir_list:
@@ -132,13 +133,13 @@ def delete_dir(path):
 
 
 def main(user_input):
-    path = pathlib.Path(user_input)  
+    path = aiopath.path(user_input)  
     print_recursive(path,user_input)
     delete_dir(path)
     return path
 
 def delete_dir(path):
-    path = pathlib.Path(path)
+    path = aiopath.path(path)
     if path.is_dir() and path.name not in dir_list:
         for element in path.iterdir():
             if element.is_dir() and element.name not in dir_list:
