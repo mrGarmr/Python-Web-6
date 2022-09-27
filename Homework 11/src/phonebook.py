@@ -28,6 +28,7 @@ def add_contact(user_id):
         db.session.add(contact)
         db.session.commit()
 
+
 #
 # def update_picture(pic_id, user_id, description):
 #     picture = get_picture_user(pic_id, user_id)

@@ -67,7 +67,7 @@ def login():
         email = request.form.get('email')
         password = request.form.get('password')
         user = users.login(email, password)
-        print(user)
+
         if user is None:
             return redirect(url_for('login'))
         session['username'] = {"username": user.username, "id": user.id}
@@ -92,69 +92,77 @@ def logout():
     return response
 
 
-@app.route('/mainpage', strict_slashes=False)
+@app.route('/mainpage', methods=['GET', 'POST'], strict_slashes=False)
 def main_table():
-    auth = True if 'username' in session else False
-    if not auth:
-        return redirect(request.url)
+
+    if request.method == 'POST' and request.form['submit'] == "Add":
+        print('modal1')
+        name = request.form.get("name")
+        phone = request.form.get("phone")
+        email = request.form.get("email")
+        notes = request.form.get("notes")
+        user_id = session['username']['id']
+        print('Done')
+        users.create_contact(name, phone,email, notes, user_id)
+
+        return redirect(url_for('main_table'))
+    elif request.method == 'POST' and request.form['submit'] == "Delete":
+        print('modal2')
+        name = request.form.get("name")
+        user_id = session['username']['id']
+        users.delete_contact(name, user_id)
+        return redirect(url_for('main_table'))
+    elif request.method == 'POST' and request.form['submit'] == "Find":
+
+        name = request.form.get("name")
+        user_id = session['username']['id']
+        user = users.find_contact(name, user_id)
+        return render_template('find.html', user =user)
+
+    else:
+        auth = True if 'username' in session else False
+        if not auth:
+            return redirect(request.url)
     #!!Write
-    allcontacts = phonebook.get_phonebook_user(session['username']['id'])
-    user_name = session['username']['username']
+        allcontacts = phonebook.get_phonebook_user(session['username']['id'])
+        user_name = session['username']['username']
 
-    contacts_amount = len(allcontacts)
-    return render_template('mainpage.html', username=user_name, contacts_amount = contacts_amount, auth=auth, contacts = allcontacts)
+        contacts_amount = len(allcontacts)
+        return render_template('mainpage.html', username=user_name, contacts_amount = contacts_amount, auth=auth, contacts = allcontacts)
 
-# def mainPage():
-#     if request.method == 'GET':
-#
-#         # End-points to be returned to main page.
-#         user_name = 'Vova'
-#         contacts = 20
-#         contacts_amount = 10
-#
-#         return render_template("mainPage.html", user_name=user_name, contacts_amount=contacts_amount,
-#                                user_contacts=contacts)
-    # else:
-    #     # Getting new-contact details from modal.
-    #     first_name = request.form.get("first_name")
-    #     last_name = request.form.get("last_name")
-    #     address = request.form.get("address")
-    #     organization = request.form.get("organization")
-    #     number = request.form.get("phone_number")
-    #     email = request.form.get("email")
-    #     social_handle = request.form.get("social_handle")
-    #     category = request.form.get("category")
-    #     update_contact = request.form.get("update_contact")
-    #     contact_id = request.form.get("saved_contact_id")
-    #
-    #     # User ID from session data.
-    #     user_id = session.get("user_id")
-    #
-    #     # Contact table id generation
-    #     table_id = 'user_' + str(session["user_id"]) + '_contacts'
-    #
-    #     # Instantiating ContactTable and ContactTableManipulation classes.
-    #     # ContactSetUp = ContactTableSetUp(user_id, first_name, last_name, address, organization, number, email, social_handle, category)
-    #     # ContactManipulation = ContactTableManipulation(table_id,)
-    #
-    #     # Handling different contact CRUD operations.....
-    #     # if update_contact == "Add Contact":
-    #         # Inserting contact into table.
-    #         # ContactSetUp.insert_contact()
-    #     # elif update_contact == "Update Contact":
-    #     # ContactManipulation.update_contact()
-    #
-    #     # Updating sessions contact-list data.
-    #     # table_name = session["table_name"]
-    #     # user_contacts = ContactSetUp.return_all_contacts(table_name)
-    #     # session["user_contacts"] = user_contacts
-    #
-    #     # End-points to be returned to main page.
-    #     # user_name = sess.get('user_name').title()
-    #     # contacts = sess["user_contacts"]
-    #     # contacts_amount = len(contacts)
-    #
-    #     return render_template("mainPage.html", user_name=user_name, user_contacts=contacts, contacts_amount=contacts_amount)
+    # Main page add
 
 
 
+
+
+
+        #
+        # # User ID from session data.
+        # user_id = session.get("user_id")
+        #
+        # # Contact table id generation
+        # table_id = 'user_' + str(session["user_id"]) + '_contacts'
+        #
+        # # Instantiating ContactTable and ContactTableManipulation classes.
+        # # ContactSetUp = ContactTableSetUp(user_id, first_name, last_name, address, organization, number, email, social_handle, category)
+        # # ContactManipulation = ContactTableManipulation(table_id,)
+        #
+        # # Handling different contact CRUD operations.....
+        # # if update_contact == "Add Contact":
+        #     # Inserting contact into table.
+        #     # ContactSetUp.insert_contact()
+        # # elif update_contact == "Update Contact":
+        # # ContactManipulation.update_contact()
+        #
+        # # Updating sessions contact-list data.
+        # # table_name = session["table_name"]
+        # # user_contacts = ContactSetUp.return_all_contacts(table_name)
+        # # session["user_contacts"] = user_contacts
+        #
+        # # End-points to be returned to main page.
+        # # user_name = sess.get('user_name').title()
+        # # contacts = sess["user_contacts"]
+        # # contacts_amount = len(contacts)
+        #
+        # return render_template("mainPage.html", user_name=user_name, user_contacts=contacts, contacts_amount=contacts_amount)

@@ -14,30 +14,70 @@
       <div class="main_content">
         <div class="header">
           <h1>Welcome {{username}}, Showing all ({{contacts_amount}}) Contacts</h1>
-          <div class="nav_icons">
-            <i href="#myModal3" class="modal_btn fa-solid fa-gear"></i>
 
+            <div class="nav_icons">
 
-
-          </div>
+              <div class="links">
+              <ul>
+                 <li><a href="{{url_for('logout')}}" class="btn" >Logout</a></li>
+              </ul>
+              </div>
+            </div>
         </div>
-        <div class="body">
-          <!-- <div class="body_nav">-->
-          <div class="search">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input
-              id="searchbar"
-              onkeyup="searchContact()"
-              type="text"
-              placeholder="Search by name, tags"
-            />
-          </div>
+
           <div class="nav_icons">
 
+              <a href="#myModal3" class="Find contact">FIND Contact</a>
+                   <a href="#x" class="overlay" id="myModal3"></a>
+                    <div class="popup">
+                        <form method="POST" action="" >
+                            <label for="name"><b>Contact to find</b></label>
+                            <input type="text" placeholder="name" name ="name" required>
+                            <input type = "submit" value = "Find" name = "submit" ><br>
+                        </form>
 
-            <button class="add contact" href="#myModal1">
-              <i href="#myModal1" class="modal_btn fa-solid fa-plus"></i> Add
-              Contact
+                            <a class="close"title="Закрыть" href="#close"></a>
+
+                    </div>
+
+
+                <a href="#myModal01"  class="add contact">+ ADD Contact </a>
+                   <a href="#x" class="overlay" id="myModal01"></a>
+                    <div class="popup">
+                        <form method="POST" action="" >
+                            <label for="name"><b>Name</b></label>
+                            <input type="text" placeholder="name" name="name" required>
+
+                            <label for="phone"><b>Phone</b></label>
+                            <input type="text" placeholder="phone" name="phone" required>
+
+                            <label for="email"><b>Email</b></label>
+                            <input type="text" placeholder="Email" name="email" required>
+
+                            <label for="notes"><b>Notes</b></label>
+                            <input type="text" placeholder="notes" name="notes" required>
+
+                            <input type = "submit" value = "Add" name = "submit" ><br>
+
+                        </form>
+
+                    <a class="close"title="Закрыть" href="#close"></a>
+                    </div>
+
+
+            <a href="#myModal2" class="Delete contact"> - Delete Contact</a>
+                   <a href="#x" class="overlay" id="myModal2"></a>
+                    <div class="popup">
+                        <form method="POST" action="">
+                            <label for="name"><b>Contact to delete</b></label>
+                            <input type="text" placeholder="name" name="name" required>
+
+                            <input type = "submit" value = "Delete" name = "submit" ><br>
+                        </form>
+
+                    <a class="close"title="Закрыть" href="#close"></a>
+                    </div>
+
             </button>
           </div>
 
@@ -53,6 +93,7 @@
              <td>{{ i.name }}</td>
              <td>{{ i.phone }}</td>
              <td>{{ i.email }}</td>
+               <td>{{ i.notes }}</td>
            </tr>
            {% endfor %}
 
