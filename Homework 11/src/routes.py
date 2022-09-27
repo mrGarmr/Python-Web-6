@@ -94,33 +94,31 @@ def logout():
 
 @app.route('/mainpage', methods=['GET', 'POST'], strict_slashes=False)
 def main_table():
+    auth = True if 'username' in session else False
 
     if request.method == 'POST' and request.form['submit'] == "Add":
-        print('modal1')
         name = request.form.get("name")
         phone = request.form.get("phone")
         email = request.form.get("email")
         notes = request.form.get("notes")
         user_id = session['username']['id']
-        print('Done')
         users.create_contact(name, phone,email, notes, user_id)
-
         return redirect(url_for('main_table'))
+
     elif request.method == 'POST' and request.form['submit'] == "Delete":
-        print('modal2')
         name = request.form.get("name")
         user_id = session['username']['id']
         users.delete_contact(name, user_id)
         return redirect(url_for('main_table'))
-    elif request.method == 'POST' and request.form['submit'] == "Find":
 
+    elif request.method == 'POST' and request.form['submit'] == "Find":
         name = request.form.get("name")
         user_id = session['username']['id']
         user = users.find_contact(name, user_id)
-        return render_template('find.html', user =user)
+        return render_template('find.html', auth=auth, users=user)
 
     else:
-        auth = True if 'username' in session else False
+
         if not auth:
             return redirect(request.url)
     #!!Write

@@ -61,7 +61,7 @@
 
                         </form>
 
-                    <a class="close"title="Закрыть" href="#close"></a>
+                    <a class="close" title="Закрыть" href="#close"></a>
                     </div>
 
 
@@ -84,7 +84,8 @@
 
           <!--</div>-->
         </div>
-        <div id="p" class="contactlist">
+
+  <div id="p" class="contactlist">
          <table>
 
            {% for i in contacts %}
@@ -97,102 +98,8 @@
            </tr>
            {% endfor %}
 
-         <table id="table">
-
-        {% for contact_detail in user_contacts %}
-              <tr>
-                <td>
-                  <span>
-                   <i class="fa-solid fa-user"></i>
-                  </span>
-                </td>
-                <td class="c_details" style="width: 20%;">
-                  <h5>
-                     {{contact_detail.first_name + " " + contact_detail.last_name}}
-                  <p class="role">{{contact_detail.category}}</p>
-                  </h5>
-                </td>
-                <td >
-                  <span>
-                    <i class="fa-solid fa-phone"></i>
-                  </span>
-                </td>
-                <td class="c_details" >
-                 <h5>{{contact_detail.number}}</h5>
-                </td>
-                <td >
-                  <span>
-                    <i class="fa-solid fa-envelope"></i>
-                  </span>
-                </td>
-                <td class="c_details" >
-                  <h5>{{contact_detail.email}}</h5>
-                </td>
-
-                <td class="m_icon">
-                   <div onclick="changeIcon(this)">
-                <i id="fav" class="fa-regular fa-star font-xs"></i>
-                   </div>
-
-               <td class="m_icon">
-                  <button  onclick="changeIcon(this)" >
-                   <i class="fa-regular fa-star"></i>
-                    </button>
-
-                </td>
-                <td class="m_icon">
-                  <button>
-                    <i href="#myModal4" class="modal_btn fa-solid fa-eye"></i>
-                    </button>
-                </td>
-                <td class="m_icon">
-
-                    <i href="#myModal2" data-target="#myModal2" data-toggle="modal" class="modal_btn fa-solid fa-pen-to-square" data-toogle=""></i>
-
-                  <button>
-                    <i href="#myModal2" class="modal_btn fa-solid fa-pen-to-square"></i>
-                    </button>
->>>>>>> b593ccd5ee81a476c6e6c5ddddafcb4765b197ed
-                </td>
-                <td class="m_icon">
-                  <button >
-                    <i class="fa-solid fa-trash"></i>
-                    </button>
-                </td>
-
-              </tr>
-
-              </tr>
-
->>>>>>> b593ccd5ee81a476c6e6c5ddddafcb4765b197ed
-        {% endfor %}
-            </table>
-        <div>
-
-        </div>
-
-        <!-- Modals -->
-        <div id="myModal1" class="modal">
-          <!-- Modal content -->
-          <div class="modal_content">
-            <div class="modal_header">
-              <span class="close">×</span>
-              <h1>Add new Contact</h1>
-            </div>
-            <div class="imgDiv">
-              <div id="add_new_contact" class="imgBox">
-                <!-- <div id="imgBox"> -->
-
-                <input
-                  type="file"
-                  accept="image/*"
-                  name="image"
-                  id="add_profile_pic"
-                  style="display: none"
-                  onchange="loadNewFile(event)"
-
-                />
-
+         </table>
+  </div>
 
   </body>
 </html>

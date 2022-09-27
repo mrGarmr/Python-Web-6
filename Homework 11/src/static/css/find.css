@@ -899,3 +899,10 @@ fieldset table button {
 .btn {
 color: white;
 }
+
+table, th, td {
+  margin-top: 1em;
+
+  text-align: center;
+  border: 1px solid;
+}

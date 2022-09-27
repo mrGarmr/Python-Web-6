@@ -155,7 +155,7 @@ body {
   background: white;
   outline: none;
   width: 200px
-  border:2;
+  border: 2;
   line-height: 1;
   font-weight: 600;
   font-size: 1.1rem;
@@ -510,6 +510,7 @@ form {
   justify-content: space-between;
 }
 table {
+
   width: 100%;
   /* margin: 10px 0px 20px 0px; */
   justify-content: center;
@@ -898,4 +899,10 @@ fieldset table button {
 }
 .btn {
 color: white;
+}
+
+table, th, td {
+  margin-top: 1em;
+  text-align: center;
+  border: 1px solid;
 }

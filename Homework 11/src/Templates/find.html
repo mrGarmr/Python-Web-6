@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../static/css/mainPage.css" />
+    <link rel="stylesheet" href="../static/css/find.css" />
     <script
       src="https://kit.fontawesome.com/188eb5eaaf.js"
       crossorigin="anonymous"
@@ -13,7 +13,7 @@
 
       <div class="main_content">
         <div class="header">
-          <h1>Welcome {{username}}, Showing all ({{contacts_amount}}) Contacts</h1>
+          <h1>You looked for:</h1>
 
             <div class="nav_icons">
 
@@ -26,21 +26,19 @@
         </div>
 
 
-  <div id="p" class="contactlist">
 
     <table>
       {% for i in users %}
-      <tr class='success'>
-        <td>{{ i.id }}</td>
-        <td>{{ i.name }}</td>
-        <td>{{ i.phone }}</td>
-        <td>{{ i.email }}</td>
-        <td>{{ i.notes }}</td>
-      </tr>
+          <tr class='user'>
+              <td>{{ i.id }}</td>
+              <td>{{ i.name }}</td>
+              <td>{{ i.phone }}</td>
+              <td>{{ i.email }}</td>
+              <td>{{ i.notes }}</td>
+          </tr>
       {% endfor %}
 
     </table>
-  </div>
 
 
   </body>

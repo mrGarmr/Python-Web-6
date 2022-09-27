@@ -42,6 +42,7 @@ def delete_contact(name, user_id):
     db.session.query(models.Contact).filter(and_(models.Contact.user_id == user_id, models.Contact.name == name)).delete()
     db.session.commit()
     print('Done')
+
 def find_contact(name, user_id):
-    user = db.session.query(models.Contact).filter(and_(models.Contact.user_id == user_id, models.Contact.name == name)).first()
+    user = db.session.query(models.Contact).filter(and_(models.Contact.user_id == user_id, models.Contact.name == name)).all()
     return user
