@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "homework12"
+version = "0.1.0"
+description = ""
+authors = ["Garmr <nvova@i.ua>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aiohttp = "^3.8.3"
+Jinja2 = "^3.1.2"
+aiohttp-jinja2 = "^1.5"
+bs4 = "^0.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
