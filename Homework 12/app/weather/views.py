@@ -13,7 +13,7 @@ async def find_weather_1(session, url):
       soup = BeautifulSoup(html, "html.parser")
       inf = soup.find('div', {'class': "now"})
 
-      temp = inf.find('span', {'class': "js_value tab-weather__value_l"}).text.strip()
+      temp = inf.find('span', {'class': "unit unit_temperature_c").text.strip()
       wind = inf.find('div', {'class': "nowinfo__value"}).text.strip()
       desc = inf.find('span', {'class': "tip _top _center"}).text
 
