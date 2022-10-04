@@ -11,7 +11,7 @@ async def find_weather_1(session, url):
    async with session.get(url) as response:
       html = await response.text()
       soup = BeautifulSoup(html, "html.parser")
-      inf = soup.find('div', {'class': "forecast_frame forecast_now"})
+      inf = soup.find('div', {'class': "now"})
 
       temp = inf.find('span', {'class': "js_value tab-weather__value_l"}).text.strip()
       wind = inf.find('div', {'class': "nowinfo__value"}).text.strip()
