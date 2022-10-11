@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+</head>
+
+<h2> Weather 1</h2>
+<h3>{{ url_1 }}</h3>
+{% if not result1 %}
+    <h4>No data</h4>
+{% else %}
+    <h4>{{ result1 }} Celsius</h4>
+{% endif %}
+>------------------------------------------------------------------------------------------<
+
+<h2> Weather 2</h2>
+<h3> {{ url2 }} </h3>
+{% if not result2 %}
+    <h4>No data</h4>
+{% else %}
+    <h4>{{ result2 }} Celsius</h4>
+{% endif %}
+>------------------------------------------------------------------------------------------<
+
+<h2> Weather 3</h2>
+<h3> {{ url3 }}</h3>
+{% if not result3 %}
+    <h4>No data</h4>
+{% else %}
+    <h4>{{ result3 }}° Celsius</h4>
+{% endif %}
+
+</body>
+</html>

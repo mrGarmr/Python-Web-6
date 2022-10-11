@@ -9,7 +9,7 @@ def setup_routes(application):
 
 
 def setup_external_libraries(application: web.Application) -> None:
-   aiohttp_jinja2.setup(application, loader=jinja2.FileSystemLoader("templates"))
+   aiohttp_jinja2.setup(application, loader=jinja2.FileSystemLoader("src/templates"))
 
 
 def setup_app(application):

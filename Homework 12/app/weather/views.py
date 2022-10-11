@@ -4,60 +4,55 @@ import asyncio
 from .urls import url_1, url_3, url_2
 from datetime import datetime
 from bs4 import BeautifulSoup
-import re
+
+now = datetime.now().date()
+date = str(now)
 
 
 async def find_weather_1(session, url):
-   async with session.get(url) as response:
-      html = await response.text()
-      soup = BeautifulSoup(html, "html.parser")
-      inf = soup.find('div', {'class': "now"})
+    async with session.get(url, ssl=False) as response:
+        html = await response.text()
+        soup = BeautifulSoup(html, "html.parser")
+        try:
+            inform = soup.find('span', {'class': "wr-day-temperature__high-value"})
+            temp = inform.find('span', {'class': "wr-value--temperature--c"}).text.strip()
+            return temp
+        except AttributeError:
+            return None
 
-      temp = inf.find('span', {'class': "unit unit_temperature_c").text.strip()
-      wind = inf.find('div', {'class': "nowinfo__value"}).text.strip()
-      desc = inf.find('span', {'class': "tip _top _center"}).text
-
-      return temp, wind, desc
 
 
 async def find_weather_2(session, url):
-   now = datetime.now().date()
-   date = str(now)
-   async with session.get(url + date) as response:
-      html = await response.text()
-      soup = BeautifulSoup(html, "html.parser")
-
-      inf = soup.find('div', {'class': "tabsContent"})
-
-      temp = inf.find('p', {'class': "today-temp"}).text.strip()
-      wind = inf.find('div', {'class': "Tooltip wind wind-N"}).text.strip()
-      desc = inf.find('div', {'class': re.compile("weatherIco")})['title']
-
-      return temp, wind, desc
+    async with session.get(url, ssl=False) as response:
+        html = await response.text()
+        soup = BeautifulSoup(html, "html.parser")
+        try:
+            inform = soup.find('div', {'class': "bk-focus__qlook"})
+            temp = inform.find('div', {'class': "h2"}).get_text()
+            return temp
+        except AttributeError:
+            return None
 
 
 async def find_weather_3(session, url):
-   async with session.get(url) as response:
-      html = await response.text()
-      soup = BeautifulSoup(html, "html.parser")
-      inf = soup.find('body')
-
-      temp = inf.find('span', {'class': "CurrentConditions--tempValue--3a50n"}).text.strip()
-      wind = inf.find('span', {'class': "Wind--windWrapper--3aqXJ undefined"}).text.split('on')[1].split(' ')[0]
-      wind = round((int(wind) / 3.6),1)
-      desc = inf.find('div', {'class': "CurrentConditions--phraseValue--2Z18W"}).text
-
-      return temp, wind, desc
-
+    async with session.get(url, ssl=False) as response:
+        html = await response.text()
+        soup = BeautifulSoup(html, "html.parser")
+        try:
+            inform = soup.find('div', {'class': "b-metar-table__temperature-value temp-color7"})
+            temp = inform.find('span', {'class': "temp"}).text
+            return temp
+        except AttributeError:
+            return None
 
 async def start_async():
-   async with aiohttp.ClientSession() as session:
-      result1, result2, result3 = await asyncio.gather(find_weather_1(session, url_1), find_weather_2(session, url_2),
-                                                       find_weather_3(session, url_3))
-   return result1, result2, result3
+    async with aiohttp.ClientSession() as session:
+        result1, result2, result3 = await asyncio.gather(find_weather_1(session, url_1), find_weather_2(session, url_2),
+                                                         find_weather_3(session, url_3))
+    return result1, result2, result3
 
 
 @aiohttp_jinja2.template("index.html")
 async def index(request):
-   result1, result2, result3 = await start_async()
-   return {'result1': result1, 'result2': result2, 'result3': result3}
+    result1, result2, result3 = await start_async()
+    return {'result1': result1, 'result2': result2, 'result3': result3, 'url_1':url_1, 'url2':url_2, 'url3': url_3}
